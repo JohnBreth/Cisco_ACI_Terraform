@@ -37,3 +37,9 @@ resource "aci_ranges" "range_1" {
   name_alias    = "CyberInsight100"
   role          = "external"
 }
+#Configure physical domain (physical endpoint connection)
+resource "aci_physical_domain" "Security_Devices" {
+  name        = "Security_Devices"
+  annotation  = "Security_Device_Domain"
+  name_alias  = "Security_Device_Domain"
+}
