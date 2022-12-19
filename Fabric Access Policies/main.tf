@@ -66,7 +66,7 @@ resource "aci_aaep_to_domain" "CyberInsight_Security_Tools_aaep_to_CyberInsight_
   domain_dn                           = aci_physical_domain.CyberInsight_Security_Devices.id
 }
 
-#Create Interface Policy Group
+#Create Interface Policy Group and attach interface policies and AAEP
 resource "aci_leaf_access_port_policy_group" "CyberInsight_Security_Device_access_port_policy_group" {
     description = "From Terraform"
     name        = "CyberInsight_Security_Device_access_port"
@@ -74,6 +74,19 @@ resource "aci_leaf_access_port_policy_group" "CyberInsight_Security_Device_acces
     name_alias  = "Security_Device_access_port"
     relation_infra_rs_l2_port_security_pol = (aci_port_security_policy.restrict_max1_security_policy.id)
     relation_infra_rs_lldp_if_pol = (aci_lldp_interface_policy.Disable_LLDP.id)
+    relation_infra_rs_att_ent_p = (aci_attachable_access_entity_profile.CyberInsight_Security_Tools.id)
+}
+
+#Configure Port Channel Policy Group and attach interface policies and AAEP
+resource "aci_leaf_access_bundle_policy_group" "CyberInsight_Security_Devices_Port_Channel" {
+  name        = "CyberInsight_Security_Devices_Port_Channel"
+  annotation  = "bundle_policy_example"
+  description = "From Terraform"
+  lag_t       = "link" #if you want VPC vs PC, change this to node
+  name_alias  = "Security_Devices_Port_Channel_policy"
+  relation_infra_rs_l2_port_security_pol = (aci_port_security_policy.restrict_max1_security_policy.id)
+  relation_infra_rs_lldp_if_pol = (aci_lldp_interface_policy.Disable_LLDP.id)
+  relation_infra_rs_att_ent_p = (aci_attachable_access_entity_profile.CyberInsight_Security_Tools.id)
 }
 
 #Configure port security with violation protect and maximum of 1

@@ -1,0 +1,11 @@
+#Configure port channel policy group
+resource "aci_leaf_access_bundle_policy_group" "CyberInsight_Security_Devices_Port_Channel" {
+  name        = "CyberInsight_Security_Devices_Port_Channel"
+  annotation  = "bundle_policy_example"
+  description = "From Terraform"
+  lag_t       = "link" #if you want VPC vs PC, change this to node
+  name_alias  = "Security_Devices_Port_Channel_policy"
+  relation_infra_rs_l2_port_security_pol = (aci_port_security_policy.restrict_max1_security_policy.id)
+  relation_infra_rs_lldp_if_pol = (aci_lldp_interface_policy.Disable_LLDP.id)
+  relation_infra_rs_att_ent_p = (aci_attachable_access_entity_profile.CyberInsight_Security_Tools.id)
+}
