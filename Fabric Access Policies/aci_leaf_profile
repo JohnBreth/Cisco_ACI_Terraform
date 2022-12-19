@@ -1,0 +1,31 @@
+#Configure leaf switch profile
+resource "aci_leaf_profile" "CyberInsight_Leaf1-2" {
+  name        = "CyberInsight_Leaf1-2"
+  lifecycle {
+  ignore_changes = [
+       relation_infra_rs_acc_port_p,
+       ]
+     }
+  description  = "From Terraform"
+  annotation  = "example"
+  name_alias  = "CyberInsight_Leaf1-2"
+  leaf_selector {
+    name                    = "one"
+    switch_association_type = "range"
+    node_block {
+      name  = "blk1"
+      from_ = "101"
+      to_   = "102"
+    }
+  }
+}
+
+#Bug in APIC doesn't allow for linking of interface selector in switch profile, need to use this rest command instead
+resource "aci_rest" "leaf_profile_to_int_profile_association" {
+  path  = "api/mo/${aci_leaf_profile.CyberInsight_Leaf1-2.id}/rsaccPortP-[${aci_leaf_interface_profile.Int_1-30_interface_profile.id}].json"
+  class_name = "infraRsAccPortP"
+  content = {
+    "annotation" : "orchestrator:terraform",
+    "tDn" : aci_leaf_interface_profile.Int_1-30_interface_profile.id
+  }
+}

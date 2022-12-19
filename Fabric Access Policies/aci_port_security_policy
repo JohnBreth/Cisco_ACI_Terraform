@@ -1,0 +1,10 @@
+#Configure port security with violation protect and maximum of 1
+resource "aci_port_security_policy" "restrict_max1_security_policy" {
+        description = "From Terraform"
+        name        = "restrict_max1_port_pol"
+        annotation  = "trestrict_max1_port_pol"
+        maximum     = "12"
+        name_alias  = "restrict_max1_port_pol"
+        timeout     = "60"
+        violation   = "protect"
+    }

@@ -1,0 +1,7 @@
+#Create Interface Policy Group
+resource "aci_leaf_access_port_policy_group" "CyberInsight_Security_Device_access_port_policy_group" {
+    description = "From Terraform"
+    name        = "CyberInsight_Security_Device_access_port"
+    annotation  = "tag_ports"
+    name_alias  = "Security_Device_access_port"
+}

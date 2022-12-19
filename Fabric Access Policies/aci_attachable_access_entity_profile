@@ -1,4 +1,4 @@
-#Configure AAEP to attach domain and IGP
+#Configure AAEP to attach domain
 resource "aci_attachable_access_entity_profile" "CyberInsight_Security_Tools" {
   description = "AAEP for CyberInsight Security Tools"
   name        = "CyberInsight_Security_Tools"

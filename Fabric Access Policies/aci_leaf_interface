@@ -1,0 +1,29 @@
+#Create interface profile
+resource "aci_leaf_interface_profile" "Int_1-30_interface_profile" {
+    description = "From Terraform"
+    name        =  "Int_1-30_interface_profile"
+    annotation  = "tag_leaf"
+    name_alias  = "Int_1-30"
+}
+
+#Create port selector
+resource "aci_access_port_selector" "Int_1-30_port_selector" {
+    leaf_interface_profile_dn = aci_leaf_interface_profile.Int_1-30_interface_profile.id
+    description               = "from terraform"
+    name                      = "Int_1-30_port_selector"
+    access_port_selector_type = "ALL"
+    annotation                = "tag_port_selector"
+    name_alias                = "Int_1-30_port_selector"
+    relation_infra_rs_acc_base_grp = aci_leaf_access_port_policy_group.CyberInsight_Security_Device_access_port_policy_group.id
+}
+
+#Link port selector to specific interface/block
+resource "aci_access_port_block" "Int_1-30_access_port_block" {
+  access_port_selector_dn = aci_access_port_selector.Int_1-30_port_selector.id
+  description             = "from terraform"
+  name                    = "Int_1-30_port_block"
+  annotation              = "tag_port_block"
+  from_port               = "30"
+  name_alias              = "Int_1-30_port_block"
+  to_port                 = "30"
+}
