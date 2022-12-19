@@ -51,3 +51,17 @@ resource "aci_l3_domain_profile" "CyberInsight_Firewall" {
   annotation = "External_connection_to_internet"
   name_alias = "CyberInsight_Firewall"
 }
+
+#Configure AAEP
+resource "aci_attachable_access_entity_profile" "CyberInsight_Security_Tools" {
+  description = "AAEP for CyberInsight Security Tools"
+  name        = "CyberInsight_Security_Tools"
+  annotation  = "tag_entity"
+  name_alias  = "Security_Tools"
+}
+
+#Configure AAEP to attach domain and IGP
+resource "aci_aaep_to_domain" "CyberInsight_Security_Tools_aaep_to_CyberInsight_Security_Devices_phy_domain" {
+  attachable_access_entity_profile_dn = aci_attachable_access_entity_profile.CyberInsight_Security_Tools.id
+  domain_dn                           = aci_physical_domain.CyberInsight_Security_Devices.id
+}
