@@ -63,6 +63,7 @@ resource "aci_application_epg" "CyberInsight_Security_application_epg" {
     pref_gr_memb                  = "exclude"
     prio                              = "unspecified"
     shutdown                      = "no"
+    relation_fv_rs_bd       = aci_bridge_domain.Security_Tools_bridge_domain.id
 }
 
 #Create second EPG
