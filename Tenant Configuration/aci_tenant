@@ -1,0 +1,6 @@
+resource "aci_tenant" "CyberInsight" {
+  name        = "CyberInsight"
+  description = "from terraform"
+  annotation  = "tag"
+  name_alias  = "CyberInsight"
+}
