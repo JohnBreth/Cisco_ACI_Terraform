@@ -113,4 +113,30 @@ resource "aci_bridge_domain" "Security_Tools_bridge_domain" {
         v6unk_mcast_act             = "flood"
         vmac                        = "not-applicable"
         relation_fv_rs_ctx = aci_vrf.CyberInsight_vrf.id
-    }
+}
+
+#Create contract, which allows for communication between different EGPs and filters based off ports/IP's
+resource "aci_contract" "Security_to_Linux" {
+        tenant_dn   =  aci_tenant.CyberInsight.id
+        description = "From Terraform"
+        name        = "Security_to_Linux"
+        annotation  = "tag_contract"
+        name_alias  = "Security_to_Linux"
+        prio        = "level1"
+        scope       = "tenant"
+        target_dscp = "unspecified"
+}
+
+#Create contract subject, collection of filters
+resource "aci_contract_subject" "Security_to_Linux_subject" {
+        contract_dn   = aci_contract.Security_to_Linux.id
+        description   = "from terraform"
+        name          = "Security_to_Linux_subject"
+        annotation    = "tag_subject"
+        cons_match_t  = "AtleastOne"
+        name_alias    = "Security_to_Linux"
+        prio          = "level1"
+        prov_match_t  = "AtleastOne"
+        rev_flt_ports = "yes"
+        target_dscp   = "CS0"
+}
