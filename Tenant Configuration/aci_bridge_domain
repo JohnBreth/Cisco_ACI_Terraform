@@ -25,4 +25,5 @@ resource "aci_bridge_domain" "Security_Tools_bridge_domain" {
         unk_mcast_act               = "flood"
         v6unk_mcast_act             = "flood"
         vmac                        = "not-applicable"
+        relation_fv_rs_ctx = aci_vrf.CyberInsight_vrf.id
     }

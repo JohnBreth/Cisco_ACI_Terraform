@@ -105,11 +105,12 @@ resource "aci_bridge_domain" "Security_Tools_bridge_domain" {
         mac                         = "00:22:BD:F8:19:FF"
         mcast_allow                 = "yes"
         multi_dst_pkt_act           = "bd-flood"
-        name_alias                  = "alias_bd"
+        name_alias                  = "Security_Tools"
         bridge_domain_type          = "regular"
         unicast_route               = "no"
         unk_mac_ucast_act           = "flood"
         unk_mcast_act               = "flood"
         v6unk_mcast_act             = "flood"
         vmac                        = "not-applicable"
+        relation_fv_rs_ctx = aci_vrf.CyberInsight_vrf.id
     }
