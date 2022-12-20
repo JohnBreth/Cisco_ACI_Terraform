@@ -37,3 +37,11 @@ resource "aci_vrf" "CyberInsight_vrf" {
   pc_enf_dir             = "egress"
   pc_enf_pref            = "unenforced"
 }
+
+#Create Application Profile, which links polices, services and relationship between EPGs, can contain more than on EPG
+resource "aci_application_profile" "CyberInsight_ap" {
+  tenant_dn  = aci_tenant.CyberInsight.id
+  name       = "CyberInsight_ap"
+  description = "from terraform"
+  name_alias = "CyberInsight_ap"
+}

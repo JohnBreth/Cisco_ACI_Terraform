@@ -1,0 +1,7 @@
+#Create Application Profile, which links polices, services and relationship between EPGs, can contain more than on EPG
+resource "aci_application_profile" "CyberInsight_ap" {
+  tenant_dn  = aci_tenant.CyberInsight.id
+  name       = "CyberInsight_ap"
+  description = "from terraform"
+  name_alias = "CyberInsight_ap"
+}
