@@ -115,6 +115,19 @@ resource "aci_bridge_domain" "Security_Tools_bridge_domain" {
         relation_fv_rs_ctx = aci_vrf.CyberInsight_vrf.id
 }
 
+#Create subnet and link to bridge domain
+resource "aci_subnet" "Security" {
+        parent_dn        = aci_bridge_domain.Security_Tools_bridge_domain.id
+        description      = "subnet"
+        ip               = "192.168.1.1/24"
+        annotation       = "tag_subnet"
+        ctrl             = ["querier", "nd"]
+        name_alias       = "Security_subnet"
+        preferred        = "no"
+        scope            = ["private", "shared"]
+        virtual          = "yes"
+}
+
 #Create contract, which allows for communication between different EGPs and filters based off ports/IP's
 resource "aci_contract" "Security_to_Linux" {
         tenant_dn   =  aci_tenant.CyberInsight.id
@@ -137,6 +150,45 @@ resource "aci_contract_subject" "Security_to_Linux_subject" {
         name_alias    = "Security_to_Linux"
         prio          = "level1"
         prov_match_t  = "AtleastOne"
-        rev_flt_ports = "yes"
+        rev_flt_ports = "yes" # This changes the destination to the source port for return traffic.
         target_dscp   = "CS0"
+}
+
+#Create filter and entry
+resource "aci_filter" "RDP" {
+        tenant_dn   = aci_tenant.CyberInsight.id
+        description = "From Terraform"
+        name        = "RDP"
+        annotation  = "tag_filter"
+        name_alias  = "RDP"
+}
+
+resource "aci_filter_entry" "RDP_entry" {
+        filter_dn     = aci_filter.RDP.id
+        description   = "From Terraform"
+        name          = "RDP"
+        annotation    = "tag_entry"
+        apply_to_frag = "no"
+        arp_opc       = "unspecified"
+        d_from_port   = "3389"
+        d_to_port     = "3389"
+        ether_t       = "ipv4"
+        icmpv4_t      = "unspecified"
+        icmpv6_t      = "unspecified"
+        match_dscp    = "CS0"
+        name_alias    = "alias_entry"
+        prot          = "tcp"
+        s_from_port   = "0"
+        s_to_port     = "0"
+        stateful      = "yes"
+        tcp_rules     = ["ack","rst"]
+}
+
+#Configured to connect contract subject with filter
+resource "aci_contract_subject_filter" "Security_RDP" {
+  contract_subject_dn  = aci_contract_subject.Security_to_Linux_subject.id
+  filter_dn  = aci_filter.RDP.id
+  action = "permit"
+  directives = ["none"]
+  priority_override = "default"
 }

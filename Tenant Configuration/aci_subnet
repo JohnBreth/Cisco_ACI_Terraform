@@ -1,11 +1,11 @@
 #Create subnet and link to bridge domain
-resource "aci_subnet" "foosubnet" {
-        parent_dn        = aci_bridge_domain.bd_for_subnet.id
+resource "aci_subnet" "Security" {
+        parent_dn        = aci_bridge_domain.Security_Tools_bridge_domain.id
         description      = "subnet"
-        ip               = "10.0.3.28/27"
+        ip               = "192.168.1.1/24"
         annotation       = "tag_subnet"
         ctrl             = ["querier", "nd"]
-        name_alias       = "alias_subnet"
+        name_alias       = "Security_subnet"
         preferred        = "no"
         scope            = ["private", "shared"]
         virtual          = "yes"

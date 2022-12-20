@@ -1,0 +1,29 @@
+#Create filter and entry
+   resource "aci_filter" "RDP" {
+        tenant_dn   = aci_tenant.CyberInsight.id
+        description = "From Terraform"
+        name        = "RDP"
+        annotation  = "tag_filter"
+        name_alias  = "RDP"
+    }
+
+    resource "aci_filter_entry" "RDP_entry" {
+        filter_dn     = aci_filter.RDP.id
+        description   = "From Terraform"
+        name          = "RDP"
+        annotation    = "tag_entry"
+        apply_to_frag = "no"
+        arp_opc       = "unspecified"
+        d_from_port   = "3389"
+        d_to_port     = "3389"
+        ether_t       = "ipv4"
+        icmpv4_t      = "unspecified"
+        icmpv6_t      = "unspecified"
+        match_dscp    = "CS0"
+        name_alias    = "alias_entry"
+        prot          = "tcp"
+        s_from_port   = "0"
+        s_to_port     = "0"
+        stateful      = "yes"
+        tcp_rules     = ["ack","rst"]
+    }

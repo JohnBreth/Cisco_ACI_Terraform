@@ -1,0 +1,8 @@
+#Configured to connect contract subject with filter
+resource "aci_contract_subject_filter" "Security_RDP" {
+  contract_subject_dn  = aci_contract_subject.Security_to_Linux_subject.id
+  filter_dn  = aci_filter.RDP.id
+  action = "permit"
+  directives = ["none"]
+  priority_override = "default"
+}

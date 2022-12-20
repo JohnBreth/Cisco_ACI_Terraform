@@ -8,6 +8,6 @@ resource "aci_contract_subject" "Security_to_Linux_subject" {
         name_alias    = "Security_to_Linux"
         prio          = "level1"
         prov_match_t  = "AtleastOne"
-        rev_flt_ports = "yes"
+        rev_flt_ports = "yes" # This changes the destination to the source port for return traffic.
         target_dscp   = "CS0"
     }
