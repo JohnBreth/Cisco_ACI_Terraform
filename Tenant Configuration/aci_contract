@@ -1,0 +1,11 @@
+#Create contract, which allows for communication between different EGPs and filters based off ports/IP's
+resource "aci_contract" "Security_to_Linux" {
+        tenant_dn   =  aci_tenant.CyberInsight.id
+        description = "From Terraform"
+        name        = "Security_to_Linux"
+        annotation  = "tag_contract"
+        name_alias  = "Security_to_Linux"
+        prio        = "level1"
+        scope       = "tenant"
+        target_dscp = "unspecified"
+    }

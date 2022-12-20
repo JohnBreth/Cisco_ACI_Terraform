@@ -1,0 +1,13 @@
+#Create contract subject, collection of filters
+resource "aci_contract_subject" "Security_to_Linux_subject" {
+        contract_dn   = aci_contract.Security_to_Linux.id
+        description   = "from terraform"
+        name          = "Security_to_Linux_subject"
+        annotation    = "tag_subject"
+        cons_match_t  = "AtleastOne"
+        name_alias    = "Security_to_Linux"
+        prio          = "level1"
+        prov_match_t  = "AtleastOne"
+        rev_flt_ports = "yes"
+        target_dscp   = "CS0"
+    }
