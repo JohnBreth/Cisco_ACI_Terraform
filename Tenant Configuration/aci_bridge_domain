@@ -1,0 +1,28 @@
+#Create Bridge Domain, broadcast domain associated with one or more subnets
+resource "aci_bridge_domain" "Security_Tools_bridge_domain" {
+        tenant_dn                   = aci_tenant.CyberInsight.id
+        description                 = "from terraform"
+        name                        = "Security_Tools_bd"
+        optimize_wan_bandwidth      = "no"
+        annotation                  = "tag_bd"
+        arp_flood                   = "no"
+        ep_clear                    = "no"
+        ep_move_detect_mode         = "garp"
+        host_based_routing          = "no"
+        intersite_bum_traffic_allow = "yes"
+        intersite_l2_stretch        = "yes"
+        ip_learning                 = "yes"
+        ipv6_mcast_allow            = "no"
+        limit_ip_learn_to_subnets   = "yes"
+        ll_addr                     = "::"
+        mac                         = "00:22:BD:F8:19:FF"
+        mcast_allow                 = "yes"
+        multi_dst_pkt_act           = "bd-flood"
+        name_alias                  = "alias_bd"
+        bridge_domain_type          = "regular"
+        unicast_route               = "no"
+        unk_mac_ucast_act           = "flood"
+        unk_mcast_act               = "flood"
+        v6unk_mcast_act             = "flood"
+        vmac                        = "not-applicable"
+    }
